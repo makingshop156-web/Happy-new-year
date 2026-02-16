@@ -11,4 +11,19 @@
     <canvas id="cas"></canvas>
     <script src="./style/script.js"></script>
 </body>
+<div id="startScreen">
+    <h1>🎆 Chúc Mừng Năm Mới 2026 🎆</h1>
+    <button id="startBtn">🔊 BẮT ĐẦU VỚI ÂM THANH</button>
+</div>
+
+<script>
+document.getElementById('startBtn').addEventListener('click', function() {
+    // Ẩn màn hình chào
+    document.getElementById('startScreen').style.display = 'none';
+    
+    // Khởi tạo audio SAU KHI user click
+    initAudio();
+    startFireworks();
+});
+</script>
 </html>
