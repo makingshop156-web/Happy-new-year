@@ -1,3 +1,18 @@
+function playFireworkSound() {
+    // Kiểm tra âm thanh đã bật chưa
+    if (!window.musicEnabled || !window.audioReady) {
+        return;
+    }
+    
+    // Tìm audio đang rảnh
+    let sound = window.fireworkSounds.find(s => s.paused);
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => {
+            console.log('Không phát được âm thanh:', e);
+        });
+    }
+}
 setTimeout(function () {
     window.location.href = "style/firework.html";
 }, 20000);
@@ -123,7 +138,7 @@ Boom.prototype = {
         ctx.restore();
     },
     _boom: function () {
-        fireworkSound.play();
+         playFireworkSound();
 
         var fragNum = getRandom(30, 200);
         var fanwei = parseInt(getRandom(300, 400));
@@ -371,4 +386,5 @@ function circle(_0x1040ea, _0x21cea0, _0x3b564a) {
     ctx[_0x92a46a(0x134)]();
     ctx[_0x92a46a(0x145)](_0x1040ea, _0x21cea0, _0x3b564a, _0x3b564a    , 0x0, 0x0, Math['PI'] * 0x2);
     ctx[_0x92a46a(0x137)]();
+
 }
