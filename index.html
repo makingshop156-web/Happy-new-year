@@ -6,24 +6,215 @@
     <title>Happy New Year 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/style.css">
+    <style>
+        /* CSS cho màn hình start */
+        #startScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        #startScreen h1 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        #startBtn {
+            padding: 20px 50px;
+            font-size: 28px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s;
+        }
+        
+        #startBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.7);
+        }
+        
+        #startBtn:active {
+            transform: scale(0.95);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Nút điều khiển nhạc */
+        #musicBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid #FFD700;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.8);
+            z-index: 1000;
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        #musicBtn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            #startScreen h1 {
+                font-size: 32px;
+            }
+            #startBtn {
+                padding: 15px 35px;
+                font-size: 22px;
+            }
+            #musicBtn {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Màn hình bắt đầu -->
+    <div id="startScreen">
+        <h1>🎆 Chúc Mừng Năm Mới 2026 🎆</h1>
+        <p style="font-size: 20px; margin-bottom: 20px; opacity: 0.9;">
+            Nhấn nút bên dưới để bắt đầu với âm thanh
+        </p>
+        <button id="startBtn">🔊 BẮT ĐẦU</button>
+    </div>
+    
+    <!-- Canvas pháo hoa -->
     <canvas id="cas"></canvas>
+    
+    <!-- Nút điều khiển nhạc -->
+    <button id="musicBtn">🔊</button>
+    
+    <!-- Script xử lý màn hình start -->
+    <script>
+        // Biến toàn cục
+        window.audioReady = false;
+        window.musicEnabled = false;
+        window.fireworkSounds = [];
+        window.backgroundMusic = null;
+        
+        // Hàm khởi tạo audio
+        function initAudio() {
+            if (window.audioReady) return;
+            window.audioReady = true;
+            
+            console.log('🎵 Đang khởi tạo âm thanh...');
+            
+            // Tạo 5 instances âm thanh pháo hoa
+            for (let i = 0; i < 5; i++) {
+                try {
+                    let sound = new Audio('./style/fireworks.mp3');
+                    sound.volume = 0.3;
+                    window.fireworkSounds.push(sound);
+                } catch(e) {
+                    console.error('Lỗi tạo âm thanh pháo hoa:', e);
+                }
+            }
+            
+            // Nhạc nền (nếu có)
+            try {
+                window.backgroundMusic = new Audio('./style/nmba.mp3');
+                window.backgroundMusic.loop = true;
+                window.backgroundMusic.volume = 0.4;
+            } catch(e) {
+                console.log('Không có nhạc nền');
+            }
+            
+            console.log('✅ Âm thanh đã sẵn sàng!');
+        }
+        
+        // Hàm bắt đầu pháo hoa
+        function startFireworks() {
+            console.log('🎆 Bắt đầu pháo hoa!');
+            // Script chính sẽ tự động chạy
+        }
+        
+        // Xử lý nút BẮT ĐẦU
+        document.getElementById('startBtn').addEventListener('click', function() {
+            console.log('👆 User đã click BẮT ĐẦU');
+            
+            // Ẩn màn hình chào
+            document.getElementById('startScreen').classList.add('hidden');
+            
+            // Hiện nút nhạc
+            document.getElementById('musicBtn').style.display = 'block';
+            
+            // Khởi tạo audio
+            initAudio();
+            
+            // Bật nhạc mặc định
+            window.musicEnabled = true;
+            
+            // Phát nhạc nền
+            if (window.backgroundMusic) {
+                window.backgroundMusic.play().catch(e => {
+                    console.log('Nhạc nền không phát được:', e);
+                });
+            }
+            
+            // Bắt đầu pháo hoa
+            startFireworks();
+        });
+        
+        // Xử lý nút điều khiển nhạc
+        document.getElementById('musicBtn').addEventListener('click', function() {
+            window.musicEnabled = !window.musicEnabled;
+            
+            if (window.musicEnabled) {
+                this.textContent = '🔊';
+                this.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+                
+                if (window.backgroundMusic) {
+                    window.backgroundMusic.play().catch(e => console.log('Lỗi:', e));
+                }
+                
+                console.log('✅ Đã BẬT âm thanh');
+            } else {
+                this.textContent = '🔇';
+                this.style.background = 'linear-gradient(135deg, #f44336, #e53935)';
+                
+                if (window.backgroundMusic) {
+                    window.backgroundMusic.pause();
+                }
+                
+                console.log('❌ Đã TẮT âm thanh');
+            }
+        });
+    </script>
+    
+    <!-- Script chính pháo hoa -->
     <script src="./style/script.js"></script>
 </body>
-<div id="startScreen">
-    <h1>🎆 Chúc Mừng Năm Mới 2026 🎆</h1>
-    <button id="startBtn">🔊 BẮT ĐẦU VỚI ÂM THANH</button>
-</div>
-
-<script>
-document.getElementById('startBtn').addEventListener('click', function() {
-    // Ẩn màn hình chào
-    document.getElementById('startScreen').style.display = 'none';
-    
-    // Khởi tạo audio SAU KHI user click
-    initAudio();
-    startFireworks();
-});
-</script>
 </html>
