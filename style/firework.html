@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./firework/fw.css">
+</head>
+
+<body>
+    <canvas id="cas"></canvas>
+    
+    <!-- Nút bật nhạc -->
+    <button id="musicBtn" style="
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 3px solid #FFD700;
+        background: linear-gradient(135deg, #FF8C00, #FF4500);
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.6);
+        z-index: 1000;
+        transition: all 0.3s ease;
+    " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        🔊
+    </button>
+    
+    <div class="button-container">
+        <div class="container">
+            <p id="line1"></p>
+            <p id="line2"></p>
+            <p id="line3"></p>
+            <p id="line4"></p>
+        </div>
+    </div>
+
+    <!-- KHỞI TẠO NHẠC TRƯỚC - ĐẢM BẢO LOAD TRƯỚC -->
+    <script>
+        // NHẠC NỀN - Khởi tạo ngay lập tức
+        var backgroundMusic = new Audio('nmba.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.5;
+        var isPlaying = false;
+        
+        // Hàm bật/tắt nhạc
+        function toggleMusic() {
+            var btn = document.getElementById('musicBtn');
+            if (isPlaying) {
+                backgroundMusic.pause();
+                btn.textContent = '🔇';
+                btn.style.background = 'linear-gradient(135deg, #666, #333)';
+                isPlaying = false;
+            } else {
+                backgroundMusic.play().then(function() {
+                    btn.textContent = '🔊';
+                    btn.style.background = 'linear-gradient(135deg, #FF8C00, #FF4500)';
+                    isPlaying = true;
+                }).catch(function(error) {
+                    console.log('Lỗi phát nhạc:', error);
+                    alert('Click vào nút 🔊 để bật nhạc nền!');
+                });
+            }
+        }
+        
+        // Gắn sự kiện cho nút
+        document.getElementById('musicBtn').addEventListener('click', toggleMusic);
+        
+        // Thử tự động phát nhạc sau 1 giây
+        setTimeout(function() {
+            toggleMusic();
+        }, 1000);
+    </script>
+
+    <!-- Load file JS chính sau khi đã setup nhạc -->
+    <script src="./firework/fw.js"></script>
+</body>
+
+</html>
